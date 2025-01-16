@@ -1,7 +1,11 @@
 import React from "react";
 
 const Footer = () => {
-  return <div className="absolute bottom-0">Footer</div>;
+  return (
+    <footer className="flex items-center justify-around h-[10rem] bg-black text-white p-4 text-2xl font-sans">
+      <p>Dynamic Coding With Gurmeet</p>
+    </footer>
+  );
 };
 
 export default Footer;

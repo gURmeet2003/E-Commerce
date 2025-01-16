@@ -3,14 +3,14 @@ import { CiSearch } from "react-icons/ci";
 import { LuCircleUser } from "react-icons/lu";
 import { FaShoppingCart } from "react-icons/fa";
 import Logo from "./Logo";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate();
   return (
     <header className="flex items-center justify-between h-14 p-3 bg-gray-400">
-      <Logo h={65} w={65} alt="Company Logo" />
-
+      <Link to={"/"}>
+        <Logo h={65} w={65} alt="Company Logo" />
+      </Link>
       <div className="hidden lg:flex items-center rounded-full border border-black">
         <input
           className="h-7 rounded-l-full p-2 text-sm text-gray-700 outline-none placeholder-gray-500"
@@ -35,14 +35,18 @@ const Header = () => {
           aria-label="Shopping Cart"
           className="flex items-center justify-center h-8 w-8 text-gray-700 hover:text-red-500"
         >
-          <FaShoppingCart className="h-6 w-6" />
+          <span className="relative">
+            <FaShoppingCart className="h-6 w-6" />
+            <span className="absolute h-5 w-5 flex font-bold items-center text-white top-[-8px] right-[-8px] bg-red-500 rounded-full justify-around ">
+              0
+            </span>
+          </span>
         </button>
-        <button
-          onClick={() => navigate("/login")}
-          className="rounded-full bg-red-500 text-white px-4 py-1 hover:bg-red-600 transition duration-400"
-        >
-          Login
-        </button>
+        <Link to={"/login"}>
+          <button className="rounded-full bg-red-500 text-white px-4 py-1 hover:bg-red-600 transition duration-400">
+            Login
+          </button>
+        </Link>
       </nav>
     </header>
   );
