@@ -2,20 +2,49 @@ import React, { useState } from "react";
 import { LuCircleUser } from "react-icons/lu";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { instance } from "../../common";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authcontext";
+
 const Login = () => {
   const [visible, setVisible] = useState(false);
+  const [auth, setAuth] = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await instance.post("/user/signin", {
+        email: data.email,
+        password: data.password,
+      });
+      if (response.status === 200) {
+        setAuth({
+          ...auth,
+          user: response.data.user,
+          token: response.data.token,
+        });
+        toast.success(response.data.message);
+        navigate("/");
+      }
+    } catch (e) {
+      if (e.response && e.response.status === 404) {
+        toast.error(e.response.data.message);
+      } else {
+        toast.error(e.response.data.message);
+      }
+    }
     console.log(data);
   };
 

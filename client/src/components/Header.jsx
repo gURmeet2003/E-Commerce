@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { LuCircleUser } from "react-icons/lu";
 import { FaShoppingCart } from "react-icons/fa";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/authcontext";
 
 const Header = () => {
+  const [auth, setAuth] = useAuth();
+  const isLoggedIn = Boolean(auth.token);
+
+  const handleLogout = (e) => {
+    localStorage.removeItem("auth");
+    setAuth({ user: null, token: "" });
+  };
   return (
     <header className="flex items-center justify-between h-14 p-3 bg-gray-400">
       <Link to={"/"}>
@@ -27,13 +35,13 @@ const Header = () => {
       <nav className="flex items-center space-x-4 md:space-x-6">
         <button
           aria-label="User Profile"
-          className="flex items-center justify-center h-8 w-8 text-gray-700 hover:text-red-500"
+          className="flex items-center justify-center h-8 w-8 text-gray-700 "
         >
           <LuCircleUser className="h-6 w-6" />
         </button>
         <button
           aria-label="Shopping Cart"
-          className="flex items-center justify-center h-8 w-8 text-gray-700 hover:text-red-500"
+          className="flex items-center justify-center h-8 w-8 text-gray-700 "
         >
           <span className="relative">
             <FaShoppingCart className="h-6 w-6" />
@@ -42,11 +50,20 @@ const Header = () => {
             </span>
           </span>
         </button>
-        <Link to={"/login"}>
-          <button className="rounded-full bg-red-500 text-white px-4 py-1 hover:bg-red-600 transition duration-400">
-            Login
+        {isLoggedIn ? (
+          <button
+            onClick={handleLogout}
+            className="rounded-full bg-red-500 text-white px-4 py-1 hover:bg-red-600 transition duration-400"
+          >
+            Logout
           </button>
-        </Link>
+        ) : (
+          <Link to={"/login"}>
+            <button className="rounded-full bg-red-500 text-white px-4 py-1 hover:bg-red-600 transition duration-400">
+              Login
+            </button>
+          </Link>
+        )}
       </nav>
     </header>
   );
