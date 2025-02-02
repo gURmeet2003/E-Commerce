@@ -2,6 +2,7 @@ import express from "express";
 import { user_signup } from "../controllers/user/signup.js";
 import { user_signin } from "../controllers/user/signin.js";
 import { isAdmin, requireSignIn } from "../middlewares/authmiddleware.js";
+import { uploadproductController } from "../controllers/product/uploadproduct.js";
 
 export const router = express.Router();
 
@@ -13,3 +14,6 @@ router.get("/hello", requireSignIn, isAdmin, (req, res) => {
 });
 
 //admin routes
+
+//product routes
+router.post("/upload-product", requireSignIn, isAdmin, uploadproductController);
