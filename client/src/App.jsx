@@ -7,6 +7,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import SignUp from "./pages/Auth/SignUp";
 import { ToastContainer } from "react-toastify";
 import Hello from "./pages/Hello";
+import AdminPanel from "./pages/Admin/AdminPanel";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/forgot_password" element={<ForgotPassword />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/hello" element={<Hello />} />
+        <Route path="/admin-panel" element={<AdminPanel />} />
       </Routes>
       <ToastContainer />
       <Footer />

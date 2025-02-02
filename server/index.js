@@ -7,7 +7,7 @@ config();
 
 const app = express();
 
-const port = 4040 || process.env.PORT;
+const port = process.env.PORT || 4040;
 
 app.use(express.json());
 app.use(
