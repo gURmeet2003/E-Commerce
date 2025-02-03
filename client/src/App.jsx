@@ -1,13 +1,23 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Auth/Login";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import SignUp from "./pages/Auth/SignUp";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Hello from "./pages/Hello";
 import AdminPanel from "./pages/Admin/AdminPanel";
+import { useAuth } from "./context/authcontext";
+
+const AdminRoute = ({ element }) => {
+  const [auth] = useAuth();
+  if (!auth.user || auth.user.role !== "admin") {
+    toast.error("Unauthorized");
+    return <Navigate to="/" />;
+  }
+  return element;
+};
 
 function App() {
   return (
@@ -19,7 +29,12 @@ function App() {
         <Route path="/forgot_password" element={<ForgotPassword />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/hello" element={<Hello />} />
-        <Route path="/admin-panel" element={<AdminPanel />} />
+
+        {/* Protected Admin Route */}
+        <Route
+          path="/admin-panel"
+          element={<AdminRoute element={<AdminPanel />} />}
+        />
       </Routes>
       <ToastContainer />
       <Footer />

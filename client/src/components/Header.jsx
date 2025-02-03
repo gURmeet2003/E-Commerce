@@ -5,6 +5,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
@@ -13,6 +14,7 @@ const Header = () => {
   const handleLogout = (e) => {
     localStorage.removeItem("auth");
     setAuth({ user: null, token: "" });
+    toast.success("Logout Successful");
   };
   return (
     <header className="flex items-center justify-between h-14 p-3 bg-gray-400">

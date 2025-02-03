@@ -25,7 +25,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.post("/user/signin", {
+      const response = await instance.post("/auth/signin", {
         email: data.email,
         password: data.password,
       });
