@@ -11,7 +11,7 @@ const Hello = () => {
     const fetchData = async () => {
       console.log("Auth Token:", auth.token);
       try {
-        const response = await instance.get("/user/hello", {
+        const response = await instance.get("/auth/hello", {
           headers: {
             Authorization: `Bearer ${auth.token}`,
           },

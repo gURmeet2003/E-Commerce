@@ -15,7 +15,7 @@ app.use(
     origin: process.env.FRONTEND_URL,
   })
 );
-app.use("/user", router);
+app.use("/auth", router);
 connectDB();
 app.listen(port, () => {
   console.log("server is running");

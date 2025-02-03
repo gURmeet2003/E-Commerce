@@ -1,9 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import signinGif from "../../assest/signin.gif";
 import UploadProduct from "../../components/UploadProduct";
+import { toast } from "react-toastify";
+import { instance } from "../../common";
 
 const AdminPanel = () => {
   const [displayUpload, setDisplayUpload] = useState(false);
+
+  const [allproduct, setAllproduct] = useState([]);
+
+  const fetchAllProduct = async () => {
+    try {
+      const response = await instance.get("/auth/all-product");
+      if (response.status === 200) {
+        setAllproduct(response.data.data);
+      }
+    } catch (e) {
+      if (e.response && e.response.status === 500) {
+        toast.error("Error fetching products");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchAllProduct();
+  }, [allproduct]);
+
   return (
     <div className="flex h-screen bg-gray-100 p-4">
       {/* Sidebar */}
@@ -40,7 +62,31 @@ const AdminPanel = () => {
             Upload Product
           </button>
         </div>
+        {allproduct.length === 0 ? (
+          <p className="text-center text-gray-500">No products available</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {allproduct.map((product) => (
+              <div
+                key={product._id}
+                className="border rounded-lg shadow-lg p-4 flex flex-col items-center"
+              >
+                <img
+                  className="h-48 w-48 object-cover rounded-md"
+                  src={product.productImage}
+                  alt={product.productName}
+                />
+                <h2 className="text-lg font-semibold mt-4">
+                  {product.productName}
+                </h2>
+                <p className="text-gray-600">Brand: {product.brandName}</p>
+                <p className="text-green-600 font-bold">${product.selling}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
       {displayUpload && <UploadProduct setDisplayUpload={setDisplayUpload} />}
     </div>
   );

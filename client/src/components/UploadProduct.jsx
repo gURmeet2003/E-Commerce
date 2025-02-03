@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import axios from "axios";
@@ -91,7 +91,7 @@ const UploadProduct = ({ setDisplayUpload }) => {
   const handleUpload = async () => {
     try {
       const response = await instance.post(
-        "/user/upload-product", // Ensure this matches your backend route
+        "/auth/upload-product", // Ensure this matches your backend route
         data, // Data should be the first argument
         {
           headers: {
