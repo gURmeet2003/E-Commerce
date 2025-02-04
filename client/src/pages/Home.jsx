@@ -24,11 +24,18 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/authcontext";
 import { instance } from "../common";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/userSlice";
 
 const Home = () => {
   const [auth] = useAuth();
   const [allproduct, setAllproduct] = useState([]);
+  const dispatch = useDispatch();
 
+  const handleCart = (product) => {
+    dispatch(addToCart(product));
+    toast.success("Item added to cart");
+  };
   const fetchAllProduct = async () => {
     try {
       const response = await instance.get("/auth/all-product");
@@ -71,6 +78,12 @@ const Home = () => {
               </h2>
               <p className="text-gray-600">Brand: {product.brandName}</p>
               <p className="text-green-600 font-bold">${product.selling}</p>
+              <button
+                onClick={() => handleCart(product)}
+                className="bg-red-500 p-2 rounded-full text-white"
+              >
+                Add to cart
+              </button>
             </div>
           ))}
         </div>

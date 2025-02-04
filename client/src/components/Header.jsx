@@ -6,10 +6,14 @@ import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const isLoggedIn = Boolean(auth.token);
+  const cart = useSelector((state) => state.user.cart);
+
+  const totalCartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleLogout = (e) => {
     localStorage.removeItem("auth");
@@ -48,7 +52,7 @@ const Header = () => {
           <span className="relative">
             <FaShoppingCart className="h-6 w-6" />
             <span className="absolute h-5 w-5 flex font-bold items-center text-white top-[-8px] right-[-8px] bg-red-500 rounded-full justify-around ">
-              0
+              {totalCartQuantity}
             </span>
           </span>
         </button>
