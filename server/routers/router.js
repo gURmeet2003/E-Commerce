@@ -4,6 +4,8 @@ import { user_signin } from "../controllers/user/signin.js";
 import { isAdmin, requireSignIn } from "../middlewares/authmiddleware.js";
 import { uploadproductController } from "../controllers/product/uploadproduct.js";
 import { getallproductController } from "../controllers/product/getallproduct.js";
+import { getproductbyidController } from "../controllers/product/getproductbyid.js";
+import { updateproductbyidController } from "../controllers/product/updateproductbyid.js";
 
 export const router = express.Router();
 
@@ -19,3 +21,5 @@ router.get("/hello", requireSignIn, isAdmin, (req, res) => {
 //product routes
 router.get("/all-product", getallproductController);
 router.post("/upload-product", requireSignIn, isAdmin, uploadproductController);
+router.get("/get-single-product/:id", getproductbyidController);
+router.put("/update-product/:id", updateproductbyidController);
