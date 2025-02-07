@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Hello from "./pages/Hello";
 import AdminPanel from "./pages/Admin/AdminPanel";
 import { useAuth } from "./context/authcontext";
+import UpdateProduct from "./components/UpdateProduct";
 
 const AdminRoute = ({ element }) => {
   const [auth] = useAuth();
@@ -35,6 +36,7 @@ function App() {
           path="/admin-panel"
           element={<AdminRoute element={<AdminPanel />} />}
         />
+        <Route path="/update-product/:id" element={<UpdateProduct />} />
       </Routes>
       <ToastContainer />
       <Footer />

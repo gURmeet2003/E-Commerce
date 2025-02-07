@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import signinGif from "../../assest/signin.gif";
-import UploadProduct from "../../components/UploadProduct";
 import { toast } from "react-toastify";
 import { instance } from "../../common";
+import { CiEdit } from "react-icons/ci";
+import { Link } from "react-router-dom";
+import UploadProduct from "../../components/UploadProduct";
 
 const AdminPanel = () => {
   const [displayUpload, setDisplayUpload] = useState(false);
@@ -81,6 +83,9 @@ const AdminPanel = () => {
                 </h2>
                 <p className="text-gray-600">Brand: {product.brandName}</p>
                 <p className="text-green-600 font-bold">${product.selling}</p>
+                <Link to={`/update-product/${product._id}`}>
+                  <CiEdit className="text-4xl cursor-pointer" />
+                </Link>
               </div>
             ))}
           </div>
