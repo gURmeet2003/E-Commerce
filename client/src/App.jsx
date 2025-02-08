@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,14 +16,17 @@ import Hello from "./pages/Hello";
 import AdminPanel from "./pages/Admin/AdminPanel";
 import { useAuth } from "./context/authcontext";
 import UpdateProduct from "./components/UpdateProduct";
+import Cart from "./components/Cart";
 
-const AdminRoute = ({ element }) => {
+const AdminRoute = () => {
   const [auth] = useAuth();
+
   if (!auth.user || auth.user.role !== "admin") {
     toast.error("Unauthorized");
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
-  return element;
+
+  return <Outlet />;
 };
 
 function App() {
@@ -30,13 +39,13 @@ function App() {
         <Route path="/forgot_password" element={<ForgotPassword />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/hello" element={<Hello />} />
+        <Route path="/update-product/:id" element={<UpdateProduct />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Protected Admin Route */}
-        <Route
-          path="/admin-panel"
-          element={<AdminRoute element={<AdminPanel />} />}
-        />
-        <Route path="/update-product/:id" element={<UpdateProduct />} />
+        <Route path="/admin-panel" element={<AdminRoute />}>
+          <Route index element={<AdminPanel />} />
+        </Route>
       </Routes>
       <ToastContainer />
       <Footer />

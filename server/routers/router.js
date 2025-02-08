@@ -6,6 +6,8 @@ import { uploadproductController } from "../controllers/product/uploadproduct.js
 import { getallproductController } from "../controllers/product/getallproduct.js";
 import { getproductbyidController } from "../controllers/product/getproductbyid.js";
 import { updateproductbyidController } from "../controllers/product/updateproductbyid.js";
+import { deleteproductbyidController } from "../controllers/product/deleteproductbyid.js";
+import { addtocartController } from "../controllers/cart/addtocart.js";
 
 export const router = express.Router();
 
@@ -18,8 +20,11 @@ router.get("/hello", requireSignIn, isAdmin, (req, res) => {
 
 //admin routes
 
-//product routes
 router.get("/all-product", getallproductController);
 router.post("/upload-product", requireSignIn, isAdmin, uploadproductController);
 router.get("/get-single-product/:id", getproductbyidController);
 router.put("/update-product/:id", updateproductbyidController);
+router.delete("/delete-product/:id", deleteproductbyidController);
+
+//cart
+router.post("/add-to-cart", addtocartController);
