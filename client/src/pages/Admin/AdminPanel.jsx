@@ -28,6 +28,21 @@ const AdminPanel = () => {
     fetchAllProduct();
   }, [allproduct]);
 
+  const handleDeleteProduct = async (id) => {
+    try {
+      const response = await instance.delete(`/auth/delete-product/${id}`);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
+    } catch (e) {
+      if (e.response && e.response.status === 404) {
+        toast.error(e.response.data.message);
+      } else {
+        toast.error(e.response.data.message);
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100 p-4">
       {/* Sidebar */}
@@ -86,6 +101,12 @@ const AdminPanel = () => {
                 <Link to={`/update-product/${product._id}`}>
                   <CiEdit className="text-4xl cursor-pointer" />
                 </Link>
+                <button
+                  onClick={() => handleDeleteProduct(product._id)}
+                  className="rounded-full bg-red-400 p-1 text-white transition duration-200 hover:bg-red-500"
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>

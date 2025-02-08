@@ -45,17 +45,19 @@ const Header = () => {
         >
           <LuCircleUser className="h-6 w-6" />
         </button>
-        <button
-          aria-label="Shopping Cart"
-          className="flex items-center justify-center h-8 w-8 text-gray-700 "
-        >
-          <span className="relative">
-            <FaShoppingCart className="h-6 w-6" />
-            <span className="absolute h-5 w-5 flex font-bold items-center text-white top-[-8px] right-[-8px] bg-red-500 rounded-full justify-around ">
-              {totalCartQuantity}
+        <Link to={"/cart"}>
+          <button
+            aria-label="Shopping Cart"
+            className="flex items-center justify-center h-8 w-8 text-gray-700 "
+          >
+            <span className="relative">
+              <FaShoppingCart className="h-6 w-6" />
+              <span className="absolute h-5 w-5 flex font-bold items-center text-white top-[-8px] right-[-8px] bg-red-500 rounded-full justify-around ">
+                {totalCartQuantity}
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+        </Link>
         {isLoggedIn ? (
           <button
             onClick={handleLogout}
