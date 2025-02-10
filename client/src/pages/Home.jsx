@@ -32,9 +32,30 @@ const Home = () => {
   const [allproduct, setAllproduct] = useState([]);
   const dispatch = useDispatch();
 
-  const handleCart = (product) => {
-    dispatch(addToCart(product));
-    toast.success("Item added to cart");
+  const handleAddToCart = async (product) => {
+    // dispatch(addToCart(product));
+    // toast.success("Item added to cart");
+    // console.log(product);
+    try {
+      const response = await instance.post(
+        "/auth/add-to-cart",
+        {
+          productId: product._id,
+          userId: auth.user._id,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   const fetchAllProduct = async () => {
     try {
@@ -51,7 +72,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchAllProduct();
-  }, [allproduct]);
+  }, []);
 
   return (
     <div className="container mx-auto p-6">
@@ -79,7 +100,7 @@ const Home = () => {
               <p className="text-gray-600">Brand: {product.brandName}</p>
               <p className="text-green-600 font-bold">${product.selling}</p>
               <button
-                onClick={() => handleCart(product)}
+                onClick={() => handleAddToCart(product)}
                 className="bg-red-500 p-2 rounded-full text-white"
               >
                 Add to cart

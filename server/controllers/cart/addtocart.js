@@ -19,13 +19,13 @@ export const addtocartController = async (req, res) => {
     let existingCartItem = await Cart.findOne({ userId, productId });
 
     if (existingCartItem) {
-      existingCartItem.quantity += quantity || 1;
+      existingCartItem.quantity += quantity ? quantity : 1;
       await existingCartItem.save();
     } else {
       existingCartItem = await Cart.create({
         productId,
         userId,
-        quantity: quantity || 1,
+        quantity: quantity ? quantity : 1,
       });
     }
 
