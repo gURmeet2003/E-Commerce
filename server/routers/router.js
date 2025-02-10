@@ -27,4 +27,4 @@ router.put("/update-product/:id", updateproductbyidController);
 router.delete("/delete-product/:id", deleteproductbyidController);
 
 //cart
-router.post("/add-to-cart", addtocartController);
+router.post("/add-to-cart", requireSignIn, addtocartController);
