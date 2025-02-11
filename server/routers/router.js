@@ -8,6 +8,7 @@ import { getproductbyidController } from "../controllers/product/getproductbyid.
 import { updateproductbyidController } from "../controllers/product/updateproductbyid.js";
 import { deleteproductbyidController } from "../controllers/product/deleteproductbyid.js";
 import { addtocartController } from "../controllers/cart/addtocart.js";
+import { finditembyUserIdController } from "../controllers/cart/finditembyUserId.js";
 
 export const router = express.Router();
 
@@ -19,7 +20,6 @@ router.get("/hello", requireSignIn, isAdmin, (req, res) => {
 });
 
 //admin routes
-
 router.get("/all-product", getallproductController);
 router.post("/upload-product", requireSignIn, isAdmin, uploadproductController);
 router.get("/get-single-product/:id", getproductbyidController);
@@ -28,3 +28,4 @@ router.delete("/delete-product/:id", deleteproductbyidController);
 
 //cart
 router.post("/add-to-cart", requireSignIn, addtocartController);
+router.get("/find-item-by-id/:id", finditembyUserIdController);
