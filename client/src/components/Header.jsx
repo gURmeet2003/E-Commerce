@@ -6,20 +6,45 @@ import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
+import { instance } from "../common";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const isLoggedIn = Boolean(auth.token);
-  const cart = useSelector((state) => state.user.cart);
+  const [cartquantity, setCartquantity] = useState(0);
+  // const cart = useSelector((state) => state.user.cart);
 
-  const totalCartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+  // const totalCartQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleLogout = (e) => {
     localStorage.removeItem("auth");
     setAuth({ user: null, token: "" });
     toast.success("Logout Successful");
   };
+
+  const handlecartquantity = async () => {
+    try {
+      const response = await instance.get(
+        `/auth/find-item-by-id/${auth.user._id}`
+      );
+
+      if (response.status === 200) {
+        setCartquantity(response.data.totalquantity);
+      }
+    } catch (e) {
+      if (e.response && e.response.status === 404) {
+        toast.error(e.response.data.message);
+      } else {
+        console.log(e);
+        toast.error(e.response.data.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handlecartquantity();
+  }, [auth.user]);
   return (
     <header className="flex items-center justify-between h-14 p-3 bg-gray-400">
       <Link to={"/"}>
@@ -53,7 +78,7 @@ const Header = () => {
             <span className="relative">
               <FaShoppingCart className="h-6 w-6" />
               <span className="absolute h-5 w-5 flex font-bold items-center text-white top-[-8px] right-[-8px] bg-red-500 rounded-full justify-around ">
-                {totalCartQuantity}
+                {cartquantity}
               </span>
             </span>
           </button>
