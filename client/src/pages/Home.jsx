@@ -1,41 +1,13 @@
-// import React, { useEffect } from "react";
-// import { useAuth } from "../context/authcontext";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setUserDetails } from "../redux/userSlice";
-
-// const Home = () => {
-//   const [auth] = useAuth();
-//   const dispatch = useDispatch();
-//   const user = useSelector((state) => state.user.user);
-//   useEffect(() => {
-//     dispatch(setUserDetails(auth.user));
-//   }, [auth]);
-//   return (
-//     <>
-//       {JSON.stringify(auth, null, 4)}
-//       <h1>Hello,{user?.name}</h1>
-//     </>
-//   );
-// };
-
-// export default Home;
-
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/authcontext";
 import { instance } from "../common";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/userSlice";
 
 const Home = () => {
-  const [auth] = useAuth();
+  const { auth, updateCartQuantity } = useAuth();
   const [allproduct, setAllproduct] = useState([]);
-  const dispatch = useDispatch();
 
   const handleAddToCart = async (product) => {
-    // dispatch(addToCart(product));
-    // toast.success("Item added to cart");
-    // console.log(product);
     try {
       const response = await instance.post(
         "/auth/add-to-cart",
@@ -50,13 +22,16 @@ const Home = () => {
           },
         }
       );
+
       if (response.status === 200) {
         toast.success(response.data.message);
+        updateCartQuantity(); // <-- Update cart count after adding an item
       }
     } catch (e) {
       console.log(e);
     }
   };
+
   const fetchAllProduct = async () => {
     try {
       const response = await instance.get("/auth/all-product");
@@ -64,9 +39,7 @@ const Home = () => {
         setAllproduct(response.data.data);
       }
     } catch (e) {
-      if (e.response && e.response.status === 500) {
-        toast.error("Error fetching products");
-      }
+      toast.error("Error fetching products");
     }
   };
 

@@ -1,23 +1,49 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { instance } from "../common";
 
 const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() => {
-    const storedAuth = localStorage.getItem("auth");
-    return storedAuth ? JSON.parse(storedAuth) : { user: null, token: "" };
-  });
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState(
+    JSON.parse(localStorage.getItem("auth")) || { user: null, token: "" }
+  );
+  const [cartquantity, setCartquantity] = useState(0);
+
+  // Function to fetch and update cart quantity
+  const updateCartQuantity = async () => {
+    if (!auth?.user?._id) {
+      setCartquantity(0);
+      return;
+    }
+    try {
+      const response = await instance.get(
+        `/auth/find-item-by-id/${auth.user._id}`
+      );
+      if (response.status === 200) {
+        setCartquantity(response.data.totalquantity);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem("auth", JSON.stringify(auth));
-  }, [auth]);
+    if (auth.user) updateCartQuantity();
+  }, [auth.user]);
 
   return (
-    <AuthContext.Provider value={[auth, setAuth]}>
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        cartquantity,
+        setCartquantity,
+        updateCartQuantity,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-const useAuth = () => useContext(AuthContext);
-export { useAuth, AuthProvider };
+export const useAuth = () => useContext(AuthContext);

@@ -9,7 +9,7 @@ import { useAuth } from "../../context/authcontext";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
-  const [auth, setAuth] = useAuth();
+  const { auth, setAuth } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
