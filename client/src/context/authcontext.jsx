@@ -4,9 +4,11 @@ import { instance } from "../common";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(
-    JSON.parse(localStorage.getItem("auth")) || { user: null, token: "" }
-  );
+  const [auth, setAuth] = useState(() => {
+    const storedAuth = localStorage.getItem("auth");
+    return storedAuth ? JSON.parse(storedAuth) : { user: null, token: "" };
+  });
+  const [cartitem, setCartItem] = useState([]);
   const [cartquantity, setCartquantity] = useState(0);
 
   // Function to fetch and update cart quantity
@@ -19,13 +21,20 @@ export const AuthProvider = ({ children }) => {
       const response = await instance.get(
         `/auth/find-item-by-id/${auth.user._id}`
       );
+      console.log(response.data.data);
       if (response.status === 200) {
         setCartquantity(response.data.totalquantity);
+        setCartItem(response.data.data);
       }
     } catch (e) {
       console.error(e);
     }
   };
+
+  // Update localStorage whenever auth state changes
+  useEffect(() => {
+    localStorage.setItem("auth", JSON.stringify(auth));
+  }, [auth]);
 
   useEffect(() => {
     if (auth.user) updateCartQuantity();
@@ -39,6 +48,8 @@ export const AuthProvider = ({ children }) => {
         cartquantity,
         setCartquantity,
         updateCartQuantity,
+        cartitem,
+        setCartItem,
       }}
     >
       {children}

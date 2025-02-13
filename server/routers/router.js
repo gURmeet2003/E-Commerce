@@ -9,6 +9,7 @@ import { updateproductbyidController } from "../controllers/product/updateproduc
 import { deleteproductbyidController } from "../controllers/product/deleteproductbyid.js";
 import { addtocartController } from "../controllers/cart/addtocart.js";
 import { finditembyUserIdController } from "../controllers/cart/finditembyUserId.js";
+import { reducefromcartController } from "../controllers/cart/reducefromcart.js";
 
 export const router = express.Router();
 
@@ -29,3 +30,4 @@ router.delete("/delete-product/:id", deleteproductbyidController);
 //cart
 router.post("/add-to-cart", requireSignIn, addtocartController);
 router.get("/find-item-by-id/:id", finditembyUserIdController);
+router.post("/reduce-from-cart/:id", requireSignIn, reducefromcartController);
