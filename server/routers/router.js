@@ -10,6 +10,7 @@ import { deleteproductbyidController } from "../controllers/product/deleteproduc
 import { addtocartController } from "../controllers/cart/addtocart.js";
 import { finditembyUserIdController } from "../controllers/cart/finditembyUserId.js";
 import { reducefromcartController } from "../controllers/cart/reducefromcart.js";
+import { searchproductController } from "../controllers/product/searchproductController.js";
 
 export const router = express.Router();
 
@@ -21,6 +22,7 @@ router.get("/hello", requireSignIn, isAdmin, (req, res) => {
 });
 
 //admin routes
+router.get("/search-product", searchproductController);
 router.get("/all-product", getallproductController);
 router.post("/upload-product", requireSignIn, isAdmin, uploadproductController);
 router.get("/get-single-product/:id", getproductbyidController);
